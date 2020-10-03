@@ -1,16 +1,17 @@
-import { Router, request, response } from 'express';
+import { Router } from 'express';
 
 import { parseISO } from 'date-fns';
-import { getCustomRepository } from "typeorm";
 
 
-import AppointmentsRepository from '@modules/appointments/repositories/AppointmetsRepository';
+import AppointmentsRepository from '@modules/appointments/infra/typeorm/repositories/AppointmetsRepository';
 
 import CreateAppointmentsService from '@modules/appointments/services/CreateAppointmentService';
 
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
 
 const appointmentsRouter = Router();
+
+const appointmentsRepository = new AppointmentsRepository();
 
 // SoC: Separation of concerns (separação de preocupação)
 //foi crianda esta rota no index.ts http://localhost:3333/appointments
@@ -24,14 +25,12 @@ const appointmentsRouter = Router();
 
 appointmentsRouter.use(ensureAuthenticated);
 
-appointmentsRouter.get('/', async (request, response) => {
+/* appointmentsRouter.get('/', async (request, response) => {
   console.log(request.user);
-  const appointmentsRepository = getCustomRepository(AppointmentsRepository);
-
   const appointments = await appointmentsRepository.find();
 
   return response.json(appointments);
-})
+}); */
 
 /*
 * Cadastrando agendamento
@@ -47,7 +46,9 @@ appointmentsRouter.post('/', async (request, response) => {
 
   const parsedDate = parseISO(date);
 
-  const createAppointment = new CreateAppointmentsService();
+  const createAppointment = new CreateAppointmentsService(
+    appointmentsRepository
+    );
   const appointment = await createAppointment.execute(
     {
       date: parsedDate,
