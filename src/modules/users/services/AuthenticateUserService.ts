@@ -1,31 +1,34 @@
-import { getRepository } from "typeorm";
 import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import authConfig from '@config/auth'
-
+import {inject, injectable} from 'tsyringe'
 import AppError from '@shared/errors/AppError';
+import IUsersRepository from '../repositories/IUsersRepository';
 
 import User from '../infra/typeorm/entities/User';
 
 
-interface Request {
+interface IRequest {
   email: string;
   password: string;
 }
 
-interface Response {
+interface IResponse {
   user: User;
   token: string;
 }
-
+@injectable()
 class AuthenticateUserService {
-  public async execute({ email, password }: Request): Promise<Response> {
 
-    const usersRepository = getRepository(User);
+  constructor(
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository,
+    ) { }
 
-    const user = await usersRepository.findOne({ where: { email } });
+  public async execute({ email, password }: IRequest): Promise<IResponse> {
+    const user = await this.usersRepository.findByEmail(email);
 
-    if(!user){
+    if (!user) {
       throw new AppError('Incorrent email/password combination.', 401);
     }
 
@@ -34,7 +37,7 @@ class AuthenticateUserService {
 
     const passwordMatched = await compare(password, user.password);
 
-    if(!passwordMatched){
+    if (!passwordMatched) {
       throw new AppError('Incorrent email/password combination.', 401);
     }
 
@@ -46,9 +49,9 @@ class AuthenticateUserService {
     // 2 - hash para segurança em string
     // 3 - configuração dentro de um objeto
 
-    const {secret, expiresIn} = authConfig.jwt;
+    const { secret, expiresIn } = authConfig.jwt;
 
-    const token = sign({}, secret,{
+    const token = sign({}, secret, {
       subject: user.id,
       expiresIn,
     });
