@@ -6,10 +6,14 @@ import CreateAppointmentService from '../services/CreateAppointmentService';
 import { AppDataSource } from '../data-source';
 import Appointment from '../models/Appointment';
 
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+
 const appointmentsRouter = Router();
 
+appointmentsRouter.use(ensureAuthenticated);
 
 appointmentsRouter.get('/', async (request, response) => {
+  console.log(request.user);
   const appointmentsRepository = AppDataSource.getRepository(Appointment);
 
   const appointments = await appointmentsRepository.find();

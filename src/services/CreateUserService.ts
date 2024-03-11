@@ -20,12 +20,12 @@ class CreateUserService {
       throw new Error('Email address already used.');
     }
 
-    const hashPassword = await hash(password, 8);
+    const hashedPassword = await hash(password, 8);
 
     const user = usersRepository.create({
       name,
       email,
-      password: hashPassword,
+      password: hashedPassword,
     });
 
     await usersRepository.save(user);
