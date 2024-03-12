@@ -44,7 +44,7 @@ usersRouter.patch('/avatar', ensureAuthenticated, upload.single('avatar'), async
     const updateUserAvatar = new UpdateUserAvatarService();
 
     const user = await updateUserAvatar.execute({
-      user_id: request.user.id,
+      id: request.user.id,
       avatarFilename: request.file?.filename,
     });
     delete user.password;

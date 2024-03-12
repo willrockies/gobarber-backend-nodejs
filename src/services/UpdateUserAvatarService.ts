@@ -3,22 +3,23 @@ import path from "path";
 import fs from "fs";
 import uploadConfig from "../config/upload";
 import User from '../models/User';
+import AppError from '../errors/AppError';
 
 interface Request {
-    user_id: string;
+    id: string;
     avatarFilename: string | undefined;
 }
 
 class UpdateUserAvatarService {
-    public async execute({ user_id, avatarFilename }: Request): Promise<User> {
+    public async execute({ id, avatarFilename }: Request): Promise<User> {
         const usersRepository = AppDataSource.getRepository(User);
 
         const user = await usersRepository.findOne({
-            where: { user_id },
+            where: { id },
         });
 
         if (!user) {
-            throw new Error("Only authenticated user can change avatar")
+            throw new Error("Only authenticated user can change avatar");
         }
 
         if (user.avatar) {
