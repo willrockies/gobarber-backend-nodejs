@@ -1,10 +1,10 @@
 import { Router, response } from 'express';
 import { parseISO } from 'date-fns';
 import { getCustomRepository } from 'typeorm';
-import AppointmentRepository from '../repository/AppointmentsRepository';
-import CreateAppointmentService from '../services/CreateAppointmentService';
+import AppointmentRepository from '../../../../modules/appointments/repository/AppointmentsRepository';
+import CreateAppointmentService from '../../../../modules/appointments/services/CreateAppointmentService';
 import { AppDataSource } from '../data-source';
-import Appointment from '../models/Appointment';
+import Appointment from '../../../../modules/appointments/infra/typeorm/entities/Appointment';
 
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 

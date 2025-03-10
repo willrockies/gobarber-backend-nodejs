@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 
 // import express from 'express';
-import routes from './routes';
-import uploadConfig from './config/upload';
+import routes from '../../infra/http/routes';
+import uploadConfig from '../../../config/upload';
 // import './database';
 
 // const app = express();
@@ -17,7 +17,7 @@ import uploadConfig from './config/upload';
 import express, { NextFunction, Request, Response } from "express";
 import "express-async-errors";
 import { AppDataSource } from "./data-source";
-import AppError from './errors/AppError';
+import AppError from '../../errors/AppError';
 import cors from 'cors';
 
 AppDataSource.initialize().then(() => {

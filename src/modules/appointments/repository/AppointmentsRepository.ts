@@ -1,7 +1,7 @@
-import { AppDataSource } from './../data-source';
+import { AppDataSource } from '../../../shared/infra/http/data-source';
 import { EntityRepository, Repository } from 'typeorm';
 
-import Appointment from '../models/Appointment';
+import Appointment from '../infra/typeorm/entities/Appointment';
 
 
 // class AppointmentRepository extends Repository<Appointment> {

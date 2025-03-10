@@ -1,10 +1,10 @@
 
-import User from "../models/User";
-import { AppDataSource } from "../data-source";
+import User from "../infra/typeorm/entities/User";
+import { AppDataSource } from "../../../shared/infra/http/data-source";
 import { compare } from "bcryptjs";
 import { sign,verify } from "jsonwebtoken";
-import authConfig from "../config/auth";
-import AppError from "../errors/AppError";
+import authConfig from "../../../config/auth";
+import AppError from "../../../shared/errors/AppError";
 
 interface Request {
     email: string;

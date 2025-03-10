@@ -1,6 +1,6 @@
-import AppError from '../errors/AppError';
-import User from '../models/User';
-import { AppDataSource } from './../data-source';
+import AppError from '../../../shared/errors/AppError';
+import User from '../infra/typeorm/entities/User';
+import { AppDataSource } from '../../../shared/infra/http/data-source';
 import { hash } from 'bcryptjs';
 
 interface Request {
