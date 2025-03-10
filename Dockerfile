@@ -1,10 +1,12 @@
-FROM node:10
+FROM node:14
 
 WORKDIR /usr/app
-COPY . ./
+COPY package.json yarn.lock ./
 
-RUN yarn
+RUN yarn install
+
+COPY . ./
 
 EXPOSE 3333
 
-CMD yarn dev:server
+CMD ["yarn", "dev:server"]
